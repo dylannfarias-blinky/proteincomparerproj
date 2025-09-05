@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Protein Bars & Smoothies Comparison</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header>
+    <h1>Protein Bars & Smoothies</h1>
+    <nav>
+      <ul>
+        <li><a href="#compare">Compare</a></li>
+        <li><a href="#bars">Bars</a></li>
+        <li><a href="#smoothies">Smoothies</a></li>
+        <li><a href="#guides">Guides</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <section id="hero">
+      <h2>Find the best protein bar or smoothie for your lifestyle</h2>
+      <input type="text" placeholder="Search products...">
+    </section>
+
+    <section id="compare">
+      <h2>Comparison Tool</h2>
+      <div class="comparison-tool">
+        <select>
+          <option>Select a bar</option>
+        </select>
+        <select>
+          <option>Select a smoothie</option>
+        </select>
+        <table>
+          <tr><th>Nutrition</th><th>Bar</th><th>Smoothie</th></tr>
+          <tr><td>Calories</td><td>–</td><td>–</td></tr>
+          <tr><td>Protein</td><td>–</td><td>–</td></tr>
+        </table>
+      </div>
+    </section>
+
+    <section id="bars">
+      <h2>Protein Bars</h2>
+      <div class="product-list">
+        <div class="product-card">Sample Bar</div>
+      </div>
+    </section>
+
+    <section id="smoothies">
+      <h2>Smoothies</h2>
+      <div class="product-list">
+        <div class="product-card">Sample Smoothie</div>
+      </div>
+    </section>
+
+    <section id="guides">
+      <h2>Guides</h2>
+      <article>
+        <h3>How to Choose a Protein Snack</h3>
+        <p>Tips and nutrition breakdowns…</p>
+      </article>
+    </section>
+
+    <section id="about">
+      <h2>About</h2>
+      <p>This site helps you compare protein bars and smoothies quickly and easily.</p>
+    </section>
+
+    <section id="contact">
+      <h2>Contact</h2>
+      <form>
+        <input type="text" placeholder="Your Name">
+        <input type="email" placeholder="Your Email">
+        <textarea placeholder="Message"></textarea>
+        <button type="submit">Send</button>
+      </form>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; <span id="year"></span> Protein Bars & Smoothies</p>
+  </footer>
+
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
