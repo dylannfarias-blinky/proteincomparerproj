@@ -30,30 +30,31 @@
     <section id="compare">
       <h2>Comparison Tool</h2>
       <div class="comparison-tool">
-        <select>
-          <option>Select a bar</option>
+        <select id="barSelect">
+          <option value="">Select a bar</option>
         </select>
-        <select>
-          <option>Select a smoothie</option>
+        <select id="smoothieSelect">
+          <option value="">Select a smoothie</option>
         </select>
         <table>
           <tr><th>Nutrition</th><th>Bar</th><th>Smoothie</th></tr>
-          <tr><td>Calories</td><td>–</td><td>–</td></tr>
-          <tr><td>Protein</td><td>–</td><td>–</td></tr>
+          <tr><td>Calories</td><td id="barCalories">–</td><td id="smCalories">–</td></tr>
+          <tr><td>Protein</td><td id="barProtein">–</td><td id="smProtein">–</td></tr>
+          <tr><td>Sugar</td><td id="barSugar">–</td><td id="smSugar">–</td></tr>
         </table>
       </div>
     </section>
 
     <section id="bars">
       <h2>Protein Bars</h2>
-      <div class="product-list">
+      <div id="barsList" class="product-list">
         <div class="product-card">Sample Bar</div>
       </div>
     </section>
 
     <section id="smoothies">
       <h2>Smoothies</h2>
-      <div class="product-list">
+      <div id="smoothiesList" class="product-list">
         <div class="product-card">Sample Smoothie</div>
       </div>
     </section>
@@ -83,11 +84,98 @@
   </main>
 
   <footer>
-    <p>&copy; <span id="year"></span> Protein Bars & Smoothies</p>
+    <p>&copy; <span id="year"></span> Dylan Farias</p>
   </footer>
 
   <script>
     document.getElementById("year").textContent = new Date().getFullYear();
+
+    
+    const SHEET_URL = "https://sheetdb.io/api/v1/ova9b8tua6vjr";
+
+    let bars = [];
+    let smoothies = [];
+
+    async function fetchData() {
+      try {
+        const res = await fetch(SHEET_URL);
+        const data = await res.json();
+
+        bars = [];
+        smoothies = [];
+
+        // Normalize rows
+        data.forEach(row => {
+          if (row.type === "bar") {
+            bars.push(row);
+          } else if (row.type === "sm") {
+            smoothies.push(row);
+          }
+        });
+
+        renderLists();
+        populateSelects();
+      } catch (err) {
+        console.error("Error fetching sheet:", err);
+      }
+    }
+
+    function renderLists() {
+      const barsList = document.getElementById("barsList");
+      const smoothiesList = document.getElementById("smoothiesList");
+
+      barsList.innerHTML = bars.map(b =>
+        `<div class="product-card"><strong>${b.name}</strong><br>${b.brand} - ${b.protein}g protein</div>`
+      ).join("");
+
+      smoothiesList.innerHTML = smoothies.map(s =>
+        `<div class="product-card"><strong>${s.name}</strong><br>${s.brand} - ${s.protein}g protein</div>`
+      ).join("");
+    }
+
+    function populateSelects() {
+      const barSelect = document.getElementById("barSelect");
+      const smoothieSelect = document.getElementById("smoothieSelect");
+
+      // clear existing options
+      barSelect.innerHTML = '<option value="">Select a bar</option>';
+      smoothieSelect.innerHTML = '<option value="">Select a smoothie</option>';
+
+      bars.forEach(b => {
+        const opt = document.createElement("option");
+        opt.value = b.id;
+        opt.textContent = `${b.name} (${b.brand})`;
+        barSelect.appendChild(opt);
+      });
+
+      smoothies.forEach(s => {
+        const opt = document.createElement("option");
+        opt.value = s.id;
+        opt.textContent = `${s.name} (${s.brand})`;
+        smoothieSelect.appendChild(opt);
+      });
+
+      barSelect.addEventListener("change", updateComparison);
+      smoothieSelect.addEventListener("change", updateComparison);
+    }
+
+    function updateComparison() {
+      const barId = document.getElementById("barSelect").value;
+      const smId = document.getElementById("smoothieSelect").value;
+
+      const bar = bars.find(b => b.id === barId);
+      const sm = smoothies.find(s => s.id === smId);
+
+      document.getElementById("barCalories").textContent = bar ? bar.calories : "–";
+      document.getElementById("barProtein").textContent = bar ? bar.protein + "g" : "–";
+      document.getElementById("barSugar").textContent = bar ? bar.sugar + "g" : "–";
+
+      document.getElementById("smCalories").textContent = sm ? sm.calories : "–";
+      document.getElementById("smProtein").textContent = sm ? sm.protein + "g" : "–";
+      document.getElementById("smSugar").textContent = sm ? sm.sugar + "g" : "–";
+    }
+
+    fetchData();
   </script>
 </body>
 </html>
