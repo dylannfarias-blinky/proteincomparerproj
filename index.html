@@ -94,24 +94,28 @@
   <script>
     document.getElementById("year").textContent = new Date().getFullYear();
 
-
-  const SHEET_URL = "https://sheetdb.io/api/v1/ova9b8tua6vjr";
+const SHEET_URL = "https://sheetdb.io/api/v1/ova9b8tua6vjr";
 
 let bars = [];
 let smoothies = [];
 
+// Fetch data from SheetDB
 async function fetchData() {
   try {
     const res = await fetch(SHEET_URL);
-    const data = await res.json();
+    const json = await res.json();
+    
+    // SheetDB wraps data inside "data" or just returns an array of rows
+    const data = json.data || json; 
 
-    bars = data.filter(row => row.type === "bar");
-    smoothies = data.filter(row => row.type === "sm");
+    bars = data.filter(row => row.type?.toLowerCase() === "bar");
+    smoothies = data.filter(row => row.type?.toLowerCase() === "sm");
 
     renderLists();
     populateFirstSecondSelects();
   } catch (err) {
     console.error("Error fetching sheet:", err);
+    alert("Could not load product data. Check SheetDB URL and CORS settings.");
   }
 }
 
@@ -119,13 +123,17 @@ function renderLists() {
   const barsList = document.getElementById("barsList");
   const smoothiesList = document.getElementById("smoothiesList");
 
-  barsList.innerHTML = bars.map(b =>
-    `<div class="product-card"><strong>${b.name}</strong><br>${b.brand} - ${b.protein}g protein</div>`
-  ).join("");
+  barsList.innerHTML = bars.length
+    ? bars.map(b =>
+        `<div class="product-card"><strong>${b.name || "Unnamed"}</strong><br>${b.brand || ""} - ${b.protein || 0}g protein</div>`
+      ).join("")
+    : "<p>No bars found.</p>";
 
-  smoothiesList.innerHTML = smoothies.map(s =>
-    `<div class="product-card"><strong>${s.name}</strong><br>${s.brand} - ${s.protein}g protein</div>`
-  ).join("");
+  smoothiesList.innerHTML = smoothies.length
+    ? smoothies.map(s =>
+        `<div class="product-card"><strong>${s.name || "Unnamed"}</strong><br>${s.brand || ""} - ${s.protein || 0}g protein</div>`
+      ).join("")
+    : "<p>No smoothies found.</p>";
 }
 
 function populateFirstSecondSelects() {
@@ -148,9 +156,10 @@ function populateFirstSecondSelects() {
     }
 
     firstSelect.innerHTML = '<option value="">Select first product</option>' +
-      firstOptions.map(p => `<option value="${p.id}">${p.name} (${p.brand})</option>`).join("");
+      firstOptions.map((p, i) => `<option value="${p._id || i}">${p.name || "Unnamed"} (${p.brand || ""})</option>`).join("");
+
     secondSelect.innerHTML = '<option value="">Select second product</option>' +
-      secondOptions.map(p => `<option value="${p.id}">${p.name} (${p.brand})</option>`).join("");
+      secondOptions.map((p, i) => `<option value="${p._id || i}">${p.name || "Unnamed"} (${p.brand || ""})</option>`).join("");
 
     updateComparison();
   }
@@ -170,20 +179,20 @@ function updateComparison() {
   let firstArray = (type === "sm-sm") ? smoothies : bars;
   let secondArray = (type === "bar-sm") ? smoothies : ((type === "sm-sm") ? smoothies : bars);
 
-  const first = firstArray.find(p => p.id === firstId);
-  const second = secondArray.find(p => p.id === secondId);
+  const first = firstArray.find((p, i) => (p._id || i).toString() === firstId);
+  const second = secondArray.find((p, i) => (p._id || i).toString() === secondId);
 
-  document.getElementById("firstCalories").textContent = first ? first.calories : "–";
-  document.getElementById("firstProtein").textContent = first ? first.protein + "g" : "–";
-  document.getElementById("firstSugar").textContent = first ? first.sugar : "–";
-  document.getElementById("firstFat").textContent = first ? first.fat : "–";
-  document.getElementById("firstPrice").textContent = first ? "$" + first.price : "–";
+  document.getElementById("firstCalories").textContent = first?.calories ?? "–";
+  document.getElementById("firstProtein").textContent = first?.protein ? first.protein + "g" : "–";
+  document.getElementById("firstSugar").textContent = first?.sugar ?? "–";
+  document.getElementById("firstFat").textContent = first?.fat ?? "–";
+  document.getElementById("firstPrice").textContent = first?.price ? "$" + first.price : "–";
 
-  document.getElementById("secondCalories").textContent = second ? second.calories : "–";
-  document.getElementById("secondProtein").textContent = second ? second.protein + "g" : "–";
-  document.getElementById("secondSugar").textContent = second ? second.sugar : "–";
-  document.getElementById("secondFat").textContent = second ? second.fat : "–";
-  document.getElementById("secondPrice").textContent = second ? "$" + second.price : "–";
+  document.getElementById("secondCalories").textContent = second?.calories ?? "–";
+  document.getElementById("secondProtein").textContent = second?.protein ? second.protein + "g" : "–";
+  document.getElementById("secondSugar").textContent = second?.sugar ?? "–";
+  document.getElementById("secondFat").textContent = second?.fat ?? "–";
+  document.getElementById("secondPrice").textContent = second?.price ? "$" + second.price : "–";
 }
 
 fetchData();
