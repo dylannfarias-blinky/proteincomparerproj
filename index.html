@@ -94,22 +94,21 @@
   <script>
     document.getElementById("year").textContent = new Date().getFullYear();
 
-const SHEET_URL = "https://sheetdb.io/api/v1/ova9b8tua6vjr";
+
+  const SHEET_URL = "https://sheetdb.io/api/v1/ova9b8tua6vjr";
 
 let bars = [];
 let smoothies = [];
 
-// Fetch data from SheetDB
+
 async function fetchData() {
   try {
     const res = await fetch(SHEET_URL);
-    const json = await res.json();
-    
-    // SheetDB wraps data inside "data" or just returns an array of rows
-    const data = json.data || json; 
+    const data = await res.json();
+ 
 
-    bars = data.filter(row => row.type?.toLowerCase() === "bar");
-    smoothies = data.filter(row => row.type?.toLowerCase() === "sm");
+    bars = data.filter(row => row.type === "bar");
+    smoothies = data.filter(row => row.type === "sm");
 
     renderLists();
     populateFirstSecondSelects();
