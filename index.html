@@ -173,13 +173,13 @@
       document.getElementById("barProtein").textContent = bar ? bar.protein + "g" : "–";
       document.getElementById("barSugar").textContent = bar ? bar.sugar + "" : "–";
       document.getElementById("barFat").textContent = bar ? bar.fat + "" : "–";
-      document.getElementById("barPrice").textContent = bar ? bar.price + "" : "–";
+      document.getElementById("barPrice").textContent = bar ? "$" + bar.price + "" : "–";
 
       document.getElementById("smCalories").textContent = sm ? sm.calories : "–";
       document.getElementById("smProtein").textContent = sm ? sm.protein + "g" : "–";
       document.getElementById("smSugar").textContent = sm ? sm.sugar + "" : "–";
       document.getElementById("smFat").textContent = sm ? sm.fat + "" : "–";
-      document.getElementById("smPrice").textContent = sm ? sm.price + "" : "–";
+      document.getElementById("smPrice").textContent = sm ? "$" + sm.price + "" : "–";
     }
 
     fetchData();
