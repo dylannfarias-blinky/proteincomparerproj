@@ -167,12 +167,12 @@
       const sm = smoothies.find(s => s.id === smId);
 
       document.getElementById("barCalories").textContent = bar ? bar.calories : "–";
-      document.getElementById("barProtein").textContent = bar ? bar.protein + "" : "–";
-      document.getElementById("barSugar").textContent = bar ? bar.sugar + "" : "–";
+      document.getElementById("barProtein").textContent = bar ? bar.protein + "g" : "–";
+      document.getElementById("barSugar").textContent = bar ? bar.sugar + "g" : "–";
 
       document.getElementById("smCalories").textContent = sm ? sm.calories : "–";
-      document.getElementById("smProtein").textContent = sm ? sm.protein + "" : "–";
-      document.getElementById("smSugar").textContent = sm ? sm.sugar + "" : "–";
+      document.getElementById("smProtein").textContent = sm ? sm.protein + "g" : "–";
+      document.getElementById("smSugar").textContent = sm ? sm.sugar + "g" : "–";
     }
 
     fetchData();
