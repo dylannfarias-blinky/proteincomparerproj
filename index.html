@@ -28,34 +28,35 @@
       <input type="text" placeholder="Search products...">
     </section>
 
-    <section id="compare">
-      <h2>Comparison Tool</h2>
-      <div class="comparison-tool">
-        <select id="barSelect">
-          <option value="">Select a bar</option>
-        </select>
-        <select id="smoothieSelect">
-          <option value="">Select a smoothie</option>
-        </select>
-        <table>
-          <tr><th>Nutrition</th><th>Bar</th><th>Smoothie</th></tr>
-          <tr><td>Calories</td><td id="barCalories">–</td><td id="smCalories">–</td></tr>
-          <tr><td>Protein</td><td id="barProtein">–</td><td id="smProtein">–</td></tr>
-          <tr><td>Sugar</td><td id="barSugar">–</td><td id="smSugar">–</td></tr>
-          <tr><td>Fat</td><td id="barFat">–</td><td id="smFat">–</td></tr>
-          <tr><td>Price</td><td id="barPrice">–</td><td id="smPrice">–</td></tr>
-        </table>
-      </div>
-    </section>
+<section id="compare">
+  <h2>Comparison Tool</h2>
+  <div class="comparison-tool">
+    <label for="typeSelect">Compare:</label>
+    <select id="typeSelect">
+      <option value="bar-sm">Bar vs Smoothie</option>
+      <option value="bar-bar">Bar vs Bar</option>
+      <option value="sm-sm">Smoothie vs Smoothie</option>
+    </select>
 
-    <section id="bars">
-      <h2>Protein Bars</h2>
-      <div id="barsList" class="product-list">
-        <div class="product-card">Sample Bar</div>
-      </div>
-    </section>
+    <select id="firstSelect">
+      <option value="">Select first product</option>
+    </select>
+    <select id="secondSelect">
+      <option value="">Select second product</option>
+    </select>
 
-    <section id="smoothies">
+    <table>
+      <tr><th>Nutrition</th><th>First</th><th>Second</th></tr>
+      <tr><td>Calories</td><td id="firstCalories">–</td><td id="secondCalories">–</td></tr>
+      <tr><td>Protein</td><td id="firstProtein">–</td><td id="secondProtein">–</td></tr>
+      <tr><td>Sugar</td><td id="firstSugar">–</td><td id="secondSugar">–</td></tr>
+      <tr><td>Fat</td><td id="firstFat">–</td><td id="secondFat">–</td></tr>
+      <tr><td>Price</td><td id="firstPrice">–</td><td id="secondPrice">–</td></tr>
+    </table>
+  </div>
+</section>
+
+<section id="smoothies">
       <h2>Smoothies</h2>
       <div id="smoothiesList" class="product-list">
         <div class="product-card">Sample Smoothie</div>
@@ -91,98 +92,98 @@
   </footer>
 
   <script>
-    document.getElementById("year").textContent = new Date().getFullYear();
+const SHEET_URL = "https://sheetdb.io/api/v1/ova9b8tua6vjr";
 
-    
-    const SHEET_URL = "https://sheetdb.io/api/v1/ova9b8tua6vjr";
+let bars = [];
+let smoothies = [];
 
-    let bars = [];
-    let smoothies = [];
+async function fetchData() {
+  try {
+    const res = await fetch(SHEET_URL);
+    const data = await res.json();
 
-    async function fetchData() {
-      try {
-        const res = await fetch(SHEET_URL);
-        const data = await res.json();
+    bars = data.filter(row => row.type === "bar");
+    smoothies = data.filter(row => row.type === "sm");
 
-        bars = [];
-        smoothies = [];
+    renderLists();
+    populateFirstSecondSelects();
+  } catch (err) {
+    console.error("Error fetching sheet:", err);
+  }
+}
 
-        // Normalize rows
-        data.forEach(row => {
-          if (row.type === "bar") {
-            bars.push(row);
-          } else if (row.type === "sm") {
-            smoothies.push(row);
-          }
-        });
+function renderLists() {
+  const barsList = document.getElementById("barsList");
+  const smoothiesList = document.getElementById("smoothiesList");
 
-        renderLists();
-        populateSelects();
-      } catch (err) {
-        console.error("Error fetching sheet:", err);
-      }
+  barsList.innerHTML = bars.map(b =>
+    `<div class="product-card"><strong>${b.name}</strong><br>${b.brand} - ${b.protein}g protein</div>`
+  ).join("");
+
+  smoothiesList.innerHTML = smoothies.map(s =>
+    `<div class="product-card"><strong>${s.name}</strong><br>${s.brand} - ${s.protein}g protein</div>`
+  ).join("");
+}
+
+function populateFirstSecondSelects() {
+  const typeSelect = document.getElementById("typeSelect");
+  const firstSelect = document.getElementById("firstSelect");
+  const secondSelect = document.getElementById("secondSelect");
+
+  function updateOptions() {
+    const type = typeSelect.value;
+    let firstOptions = [];
+    let secondOptions = [];
+
+    if (type === "bar-sm") {
+      firstOptions = bars;
+      secondOptions = smoothies;
+    } else if (type === "bar-bar") {
+      firstOptions = secondOptions = bars;
+    } else if (type === "sm-sm") {
+      firstOptions = secondOptions = smoothies;
     }
 
-    function renderLists() {
-      const barsList = document.getElementById("barsList");
-      const smoothiesList = document.getElementById("smoothiesList");
+    firstSelect.innerHTML = '<option value="">Select first product</option>' +
+      firstOptions.map(p => `<option value="${p.id}">${p.name} (${p.brand})</option>`).join("");
+    secondSelect.innerHTML = '<option value="">Select second product</option>' +
+      secondOptions.map(p => `<option value="${p.id}">${p.name} (${p.brand})</option>`).join("");
 
-      barsList.innerHTML = bars.map(b =>
-        `<div class="product-card"><strong>${b.name}</strong><br>${b.brand} - ${b.protein}g protein</div>`
-      ).join("");
+    updateComparison();
+  }
 
-      smoothiesList.innerHTML = smoothies.map(s =>
-        `<div class="product-card"><strong>${s.name}</strong><br>${s.brand} - ${s.protein}g protein</div>`
-      ).join("");
-    }
+  typeSelect.addEventListener("change", updateOptions);
+  firstSelect.addEventListener("change", updateComparison);
+  secondSelect.addEventListener("change", updateComparison);
 
-    function populateSelects() {
-      const barSelect = document.getElementById("barSelect");
-      const smoothieSelect = document.getElementById("smoothieSelect");
+  updateOptions();
+}
 
-      // clear existing options
-      barSelect.innerHTML = '<option value="">Select a bar</option>';
-      smoothieSelect.innerHTML = '<option value="">Select a smoothie</option>';
+function updateComparison() {
+  const firstId = document.getElementById("firstSelect").value;
+  const secondId = document.getElementById("secondSelect").value;
+  const type = document.getElementById("typeSelect").value;
 
-      bars.forEach(b => {
-        const opt = document.createElement("option");
-        opt.value = b.id;
-        opt.textContent = `${b.name} (${b.brand})`;
-        barSelect.appendChild(opt);
-      });
+  let firstArray = (type === "sm-sm") ? smoothies : bars;
+  let secondArray = (type === "bar-sm") ? smoothies : ((type === "sm-sm") ? smoothies : bars);
 
-      smoothies.forEach(s => {
-        const opt = document.createElement("option");
-        opt.value = s.id;
-        opt.textContent = `${s.name} (${s.brand})`;
-        smoothieSelect.appendChild(opt);
-      });
+  const first = firstArray.find(p => p.id === firstId);
+  const second = secondArray.find(p => p.id === secondId);
 
-      barSelect.addEventListener("change", updateComparison);
-      smoothieSelect.addEventListener("change", updateComparison);
-    }
+  document.getElementById("firstCalories").textContent = first ? first.calories : "–";
+  document.getElementById("firstProtein").textContent = first ? first.protein + "g" : "–";
+  document.getElementById("firstSugar").textContent = first ? first.sugar : "–";
+  document.getElementById("firstFat").textContent = first ? first.fat : "–";
+  document.getElementById("firstPrice").textContent = first ? "$" + first.price : "–";
 
-    function updateComparison() {
-      const barId = document.getElementById("barSelect").value;
-      const smId = document.getElementById("smoothieSelect").value;
+  document.getElementById("secondCalories").textContent = second ? second.calories : "–";
+  document.getElementById("secondProtein").textContent = second ? second.protein + "g" : "–";
+  document.getElementById("secondSugar").textContent = second ? second.sugar : "–";
+  document.getElementById("secondFat").textContent = second ? second.fat : "–";
+  document.getElementById("secondPrice").textContent = second ? "$" + second.price : "–";
+}
 
-      const bar = bars.find(b => b.id === barId);
-      const sm = smoothies.find(s => s.id === smId);
-
-      document.getElementById("barCalories").textContent = bar ? bar.calories : "–";
-      document.getElementById("barProtein").textContent = bar ? bar.protein + "g" : "–";
-      document.getElementById("barSugar").textContent = bar ? bar.sugar + "" : "–";
-      document.getElementById("barFat").textContent = bar ? bar.fat + "" : "–";
-      document.getElementById("barPrice").textContent = bar ? "$" + bar.price + "" : "–";
-
-      document.getElementById("smCalories").textContent = sm ? sm.calories : "–";
-      document.getElementById("smProtein").textContent = sm ? sm.protein + "g" : "–";
-      document.getElementById("smSugar").textContent = sm ? sm.sugar + "" : "–";
-      document.getElementById("smFat").textContent = sm ? sm.fat + "" : "–";
-      document.getElementById("smPrice").textContent = sm ? "$" + sm.price + "" : "–";
-    }
-
-    fetchData();
-  </script>
+fetchData();
+</script>
 </body>
 </html>
