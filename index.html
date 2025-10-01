@@ -28,35 +28,43 @@
       <input type="text" placeholder="Search products...">
     </section>
 
-<section id="compare">
-  <h2>Comparison Tool</h2>
-  <div class="comparison-tool">
-    <label for="typeSelect">Compare:</label>
-    <select id="typeSelect">
-      <option value="bar-sm">Bar vs Smoothie</option>
-      <option value="bar-bar">Bar vs Bar</option>
-      <option value="sm-sm">Smoothie vs Smoothie</option>
-    </select>
+    <section id="compare">
+      <h2>Comparison Tool</h2>
+      <div class="comparison-tool">
+        <label for="typeSelect">Compare:</label>
+        <select id="typeSelect">
+          <option value="bar-sm">Bar vs Smoothie</option>
+          <option value="bar-bar">Bar vs Bar</option>
+          <option value="sm-sm">Smoothie vs Smoothie</option>
+        </select>
 
-    <select id="firstSelect">
-      <option value="">Select first product</option>
-    </select>
-    <select id="secondSelect">
-      <option value="">Select second product</option>
-    </select>
+        <select id="firstSelect">
+          <option value="">Select first product</option>
+        </select>
+        <select id="secondSelect">
+          <option value="">Select second product</option>
+        </select>
 
-    <table>
-      <tr><th>Nutrition</th><th>First</th><th>Second</th></tr>
-      <tr><td>Calories</td><td id="firstCalories">–</td><td id="secondCalories">–</td></tr>
-      <tr><td>Protein</td><td id="firstProtein">–</td><td id="secondProtein">–</td></tr>
-      <tr><td>Sugar</td><td id="firstSugar">–</td><td id="secondSugar">–</td></tr>
-      <tr><td>Fat</td><td id="firstFat">–</td><td id="secondFat">–</td></tr>
-      <tr><td>Price</td><td id="firstPrice">–</td><td id="secondPrice">–</td></tr>
-    </table>
-  </div>
-</section>
+        <table>
+          <tr><th>Nutrition</th><th>First</th><th>Second</th></tr>
+          <tr><td>Calories</td><td id="firstCalories">–</td><td id="secondCalories">–</td></tr>
+          <tr><td>Protein</td><td id="firstProtein">–</td><td id="secondProtein">–</td></tr>
+          <tr><td>Sugar</td><td id="firstSugar">–</td><td id="secondSugar">–</td></tr>
+          <tr><td>Fat</td><td id="firstFat">–</td><td id="secondFat">–</td></tr>
+          <tr><td>Price</td><td id="firstPrice">–</td><td id="secondPrice">–</td></tr>
+        </table>
+      </div>
+    </section>
 
-<section id="smoothies">
+    <!-- ✅ Added missing Bars section -->
+    <section id="bars">
+      <h2>Bars</h2>
+      <div id="barsList" class="product-list">
+        <div class="product-card">Sample Bar</div>
+      </div>
+    </section>
+
+    <section id="smoothies">
       <h2>Smoothies</h2>
       <div id="smoothiesList" class="product-list">
         <div class="product-card">Sample Smoothie</div>
@@ -94,107 +102,108 @@
   <script>
     document.getElementById("year").textContent = new Date().getFullYear();
 
+    const SHEET_URL = "https://sheetdb.io/api/v1/9aa5ss3hdm7su";
+    let bars = [];
+    let smoothies = [];
 
-  const SHEET_URL = "https://sheetdb.io/api/v1/9aa5ss3hdm7su";
+    async function fetchData() {
+      try {
+        const res = await fetch(SHEET_URL);
+        if (!res.ok) throw new Error("Bad response from server");
+        const data = await res.json();
 
-let bars = [];
-let smoothies = [];
+        bars = data.filter(row => row.type === "bar");
+        smoothies = data.filter(row => row.type === "sm");
 
-
-async function fetchData() {
-  try {
-    const res = await fetch(SHEET_URL);
-    const data = await res.json();
- 
-
-    bars = data.filter(row => row.type === "bar");
-    smoothies = data.filter(row => row.type === "sm");
-
-    renderLists();
-    populateFirstSecondSelects();
-  } catch (err) {
-    console.error("Error fetching sheet:", err);
-    alert("Could not load product data. Check SheetDB URL and CORS settings.");
-  }
-}
-
-function renderLists() {
-  const barsList = document.getElementById("barsList");
-  const smoothiesList = document.getElementById("smoothiesList");
-
-  barsList.innerHTML = bars.length
-    ? bars.map(b =>
-        `<div class="product-card"><strong>${b.name || "Unnamed"}</strong><br>${b.brand || ""} - ${b.protein || 0}g protein</div>`
-      ).join("")
-    : "<p>No bars found.</p>";
-
-  smoothiesList.innerHTML = smoothies.length
-    ? smoothies.map(s =>
-        `<div class="product-card"><strong>${s.name || "Unnamed"}</strong><br>${s.brand || ""} - ${s.protein || 0}g protein</div>`
-      ).join("")
-    : "<p>No smoothies found.</p>";
-}
-
-function populateFirstSecondSelects() {
-  const typeSelect = document.getElementById("typeSelect");
-  const firstSelect = document.getElementById("firstSelect");
-  const secondSelect = document.getElementById("secondSelect");
-
-  function updateOptions() {
-    const type = typeSelect.value;
-    let firstOptions = [];
-    let secondOptions = [];
-
-    if (type === "bar-sm") {
-      firstOptions = bars;
-      secondOptions = smoothies;
-    } else if (type === "bar-bar") {
-      firstOptions = secondOptions = bars;
-    } else if (type === "sm-sm") {
-      firstOptions = secondOptions = smoothies;
+        renderLists();
+        populateFirstSecondSelects();
+      } catch (err) {
+        console.error("Error fetching sheet:", err);
+        alert("Could not load product data. Check SheetDB URL and CORS settings.");
+      }
     }
 
-    firstSelect.innerHTML = '<option value="">Select first product</option>' +
-      firstOptions.map((p, i) => `<option value="${p._id || i}">${p.name || "Unnamed"} (${p.brand || ""})</option>`).join("");
+    function renderLists() {
+      const barsList = document.getElementById("barsList");
+      const smoothiesList = document.getElementById("smoothiesList");
 
-    secondSelect.innerHTML = '<option value="">Select second product</option>' +
-      secondOptions.map((p, i) => `<option value="${p._id || i}">${p.name || "Unnamed"} (${p.brand || ""})</option>`).join("");
+      if (barsList) {
+        barsList.innerHTML = bars.length
+          ? bars.map(b =>
+              `<div class="product-card"><strong>${b.name || "Unnamed"}</strong><br>${b.brand || ""} - ${b.protein || 0}g protein</div>`
+            ).join("")
+          : "<p>No bars found.</p>";
+      }
 
-    updateComparison();
-  }
+      if (smoothiesList) {
+        smoothiesList.innerHTML = smoothies.length
+          ? smoothies.map(s =>
+              `<div class="product-card"><strong>${s.name || "Unnamed"}</strong><br>${s.brand || ""} - ${s.protein || 0}g protein</div>`
+            ).join("")
+          : "<p>No smoothies found.</p>";
+      }
+    }
 
-  typeSelect.addEventListener("change", updateOptions);
-  firstSelect.addEventListener("change", updateComparison);
-  secondSelect.addEventListener("change", updateComparison);
+    function populateFirstSecondSelects() {
+      const typeSelect = document.getElementById("typeSelect");
+      const firstSelect = document.getElementById("firstSelect");
+      const secondSelect = document.getElementById("secondSelect");
 
-  updateOptions();
-}
+      function updateOptions() {
+        const type = typeSelect.value;
+        let firstOptions = [];
+        let secondOptions = [];
 
-function updateComparison() {
-  const firstId = document.getElementById("firstSelect").value;
-  const secondId = document.getElementById("secondSelect").value;
-  const type = document.getElementById("typeSelect").value;
+        if (type === "bar-sm") {
+          firstOptions = bars;
+          secondOptions = smoothies;
+        } else if (type === "bar-bar") {
+          firstOptions = secondOptions = bars;
+        } else if (type === "sm-sm") {
+          firstOptions = secondOptions = smoothies;
+        }
 
-  let firstArray = (type === "sm-sm") ? smoothies : bars;
-  let secondArray = (type === "bar-sm") ? smoothies : ((type === "sm-sm") ? smoothies : bars);
+        firstSelect.innerHTML = '<option value="">Select first product</option>' +
+          firstOptions.map((p, i) => `<option value="${p._id || i}">${p.name || "Unnamed"} (${p.brand || ""})</option>`).join("");
 
-  const first = firstArray.find((p, i) => (p._id || i).toString() === firstId);
-  const second = secondArray.find((p, i) => (p._id || i).toString() === secondId);
+        secondSelect.innerHTML = '<option value="">Select second product</option>' +
+          secondOptions.map((p, i) => `<option value="${p._id || i}">${p.name || "Unnamed"} (${p.brand || ""})</option>`).join("");
 
-  document.getElementById("firstCalories").textContent = first?.calories ?? "–";
-  document.getElementById("firstProtein").textContent = first?.protein ? first.protein + "g" : "–";
-  document.getElementById("firstSugar").textContent = first?.sugar ?? "–";
-  document.getElementById("firstFat").textContent = first?.fat ?? "–";
-  document.getElementById("firstPrice").textContent = first?.price ? "$" + first.price : "–";
+        updateComparison();
+      }
 
-  document.getElementById("secondCalories").textContent = second?.calories ?? "–";
-  document.getElementById("secondProtein").textContent = second?.protein ? second.protein + "g" : "–";
-  document.getElementById("secondSugar").textContent = second?.sugar ?? "–";
-  document.getElementById("secondFat").textContent = second?.fat ?? "–";
-  document.getElementById("secondPrice").textContent = second?.price ? "$" + second.price : "–";
-}
+      typeSelect.addEventListener("change", updateOptions);
+      firstSelect.addEventListener("change", updateComparison);
+      secondSelect.addEventListener("change", updateComparison);
 
-fetchData();
-</script>
+      updateOptions();
+    }
+
+    function updateComparison() {
+      const firstId = document.getElementById("firstSelect").value;
+      const secondId = document.getElementById("secondSelect").value;
+      const type = document.getElementById("typeSelect").value;
+
+      let firstArray = (type === "sm-sm") ? smoothies : bars;
+      let secondArray = (type === "bar-sm") ? smoothies : ((type === "sm-sm") ? smoothies : bars);
+
+      const first = firstArray.find((p, i) => (p._id || i).toString() === firstId);
+      const second = secondArray.find((p, i) => (p._id || i).toString() === secondId);
+
+      document.getElementById("firstCalories").textContent = first?.calories ?? "–";
+      document.getElementById("firstProtein").textContent = first?.protein ? first.protein + "g" : "–";
+      document.getElementById("firstSugar").textContent = first?.sugar ?? "–";
+      document.getElementById("firstFat").textContent = first?.fat ?? "–";
+      document.getElementById("firstPrice").textContent = first?.price ? "$" + first.price : "–";
+
+      document.getElementById("secondCalories").textContent = second?.calories ?? "–";
+      document.getElementById("secondProtein").textContent = second?.protein ? second.protein + "g" : "–";
+      document.getElementById("secondSugar").textContent = second?.sugar ?? "–";
+      document.getElementById("secondFat").textContent = second?.fat ?? "–";
+      document.getElementById("secondPrice").textContent = second?.price ? "$" + second.price : "–";
+    }
+
+    fetchData();
+  </script>
 </body>
 </html>
