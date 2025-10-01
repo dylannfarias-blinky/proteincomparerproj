@@ -1,52 +1,82 @@
 /* styles.css */
 
+/* Import Pirata One font for titles */
+@import url('https://fonts.googleapis.com/css2?family=Pirata+One&display=swap');
+
 body {
   font-family: Arial, sans-serif;
   margin: 0;
   padding: 0;
-  background: #fafafa;
-  color: #333;
+  background: #121212;
+  color: #e0e0e0;
 }
 
 header {
-  background: #2a5d84;
+  background: #1f1f1f;
   color: #fff;
   padding: 1rem;
+  text-align: center;
 }
 
 header h1 {
   margin: 0;
+  font-family: 'Pirata One', cursive;
+  font-size: 2.5rem;
 }
 
 nav ul {
   list-style: none;
   display: flex;
-  gap: 1rem;
+  justify-content: center;
+  gap: 1.5rem;
   padding: 0;
-  margin: 0;
+  margin: 0.5rem 0 0 0;
 }
 
 nav a {
-  color: #fff;
+  color: #f0c000;
   text-decoration: none;
   font-weight: bold;
+  transition: color 0.3s;
+}
+
+nav a:hover {
+  color: #ffde59;
 }
 
 #hero {
-  background: #e8f2f8;
+  background: #1a1a1a;
   text-align: center;
-  padding: 2rem;
+  padding: 3rem 1rem;
+  border-bottom: 2px solid #333;
+}
+
+#hero h2 {
+  font-family: 'Pirata One', cursive;
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  color: #f0c000;
 }
 
 #hero input {
-  padding: 0.5rem;
+  padding: 0.6rem;
   width: 50%;
   max-width: 300px;
   margin-top: 1rem;
+  border-radius: 8px;
+  border: 1px solid #444;
+  background: #1f1f1f;
+  color: #fff;
 }
 
 section {
-  padding: 2rem;
+  padding: 2rem 1rem;
+}
+
+h2, h3 {
+  font-family: 'Pirata One', cursive;
+  color: #f0c000;
+  margin-bottom: 1rem;
 }
 
 .product-list {
@@ -56,11 +86,17 @@ section {
 }
 
 .product-card {
-  background: #fff;
+  background: #1f1f1f;
   padding: 1rem;
-  border-radius: 8px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.5);
   text-align: center;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.product-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.7);
 }
 
 .comparison-tool {
@@ -72,50 +108,77 @@ section {
 
 .comparison-tool select {
   padding: 0.5rem;
+  border-radius: 6px;
+  border: 1px solid #444;
+  background: #1f1f1f;
+  color: #fff;
 }
 
 .comparison-tool table {
   border-collapse: collapse;
   margin-top: 1rem;
+  width: 90%;
+  max-width: 600px;
 }
 
 .comparison-tool th,
 .comparison-tool td {
-  border: 1px solid #ccc;
-  padding: 0.5rem 1rem;
+  border: 1px solid #333;
+  padding: 0.7rem 1rem;
+  text-align: left;
+}
+
+.comparison-tool th {
+  background: #2a2a2a;
 }
 
 form {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.7rem;
   max-width: 400px;
+  margin: auto;
 }
 
 form input,
 form textarea {
-  padding: 0.5rem;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+  padding: 0.6rem;
+  border: 1px solid #444;
+  border-radius: 6px;
+  background: #1f1f1f;
+  color: #fff;
 }
 
 form button {
-  background: #2a5d84;
-  color: #fff;
-  padding: 0.7rem;
+  background: #f0c000;
+  color: #121212;
+  padding: 0.8rem;
   border: none;
-  border-radius: 4px;
+  border-radius: 6px;
   cursor: pointer;
+  font-weight: bold;
+  transition: background 0.3s;
 }
 
 form button:hover {
-  background: #244c6d;
+  background: #ffde59;
 }
 
 footer {
   text-align: center;
   padding: 1rem;
-  background: #2a5d84;
-  color: #fff;
+  background: #1f1f1f;
+  color: #f0c000;
   margin-top: 2rem;
+  font-family: Arial, sans-serif;
+}
+
+/* Dark mode tables */
+table {
+  background: #1f1f1f;
+  color: #e0e0e0;
+}
+
+th, td {
+  border-color: #333;
 }

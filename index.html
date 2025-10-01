@@ -6,6 +6,26 @@
   <title>Protein Bars & Smoothies Comparison</title>
   <link rel="stylesheet" href="styles.css">
   <link rel="icon" type="image/x-icon" href="images/favicon_io/favicon-32x32.png">
+  <style>
+    /* Quick inline styles for suggestions dropdown */
+    .suggestions-box {
+      position: absolute;
+      background: white;
+      border: 1px solid #ccc;
+      max-height: 200px;
+      overflow-y: auto;
+      width: 250px;
+      margin-top: 5px;
+      z-index: 1000;
+    }
+    .suggestion-item {
+      padding: 8px;
+      cursor: pointer;
+    }
+    .suggestion-item:hover {
+      background-color: #f0f0f0;
+    }
+  </style>
 </head>
 <body>
   <header>
@@ -23,9 +43,11 @@
   </header>
 
   <main>
-    <section id="hero">
+    <section id="hero" style="position: relative;">
       <h2>Find the best protein bar or smoothie for your lifestyle</h2>
-      <input type="text" placeholder="Search products...">
+      <input type="text" id="searchInput" placeholder="Search products...">
+      <button id="searchBtn">Search</button>
+      <div id="suggestions" class="suggestions-box"></div>
     </section>
 
     <section id="compare">
@@ -56,7 +78,6 @@
       </div>
     </section>
 
-    <!-- ✅ Added missing Bars section -->
     <section id="bars">
       <h2>Bars</h2>
       <div id="barsList" class="product-list">
@@ -203,6 +224,79 @@
       document.getElementById("secondPrice").textContent = second?.price ? "$" + second.price : "–";
     }
 
+    // ---------- SEARCH FEATURE ----------
+    const suggestionsBox = document.getElementById("suggestions");
+
+    function runSearch() {
+      const query = document.getElementById("searchInput").value.trim();
+      if (query) {
+        window.location.href = `search.html?query=${encodeURIComponent(query)}`;
+      }
+    }
+
+    // Search button click
+    document.getElementById("searchBtn").addEventListener("click", runSearch);
+
+    // Pressing Enter inside the search box
+    document.getElementById("searchInput").addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        runSearch();
+      }
+    });
+
+    // Live suggestions
+    document.getElementById("searchInput").addEventListener("input", async (e) => {
+      const query = e.target.value.toLowerCase().trim();
+      if (!query) {
+        suggestionsBox.innerHTML = "";
+        return;
+      }
+
+      try {
+        const res = await fetch(SHEET_URL);
+        const data = await res.json();
+
+        const matches = data.filter(p =>
+          (p.flavor && p.flavor.toLowerCase().includes(query)) ||
+          (p.name && p.name.toLowerCase().includes(query))
+        );
+
+        if (matches.length) {
+          suggestionsBox.innerHTML = matches
+            .map(p => `
+              <div class="suggestion-item" data-flavor="${p.flavor || p.name}">
+                ${p.flavor || p.name} (${p.brand || ""})
+              </div>
+            `)
+            .join("");
+        } else {
+          suggestionsBox.innerHTML = "<div class='suggestion-item'>No matches</div>";
+        }
+
+        // Make suggestions clickable
+        document.querySelectorAll(".suggestion-item").forEach(item => {
+          item.addEventListener("click", () => {
+            const flavor = item.getAttribute("data-flavor");
+            if (flavor) {
+              window.location.href = `search.html?query=${encodeURIComponent(flavor)}`;
+            }
+          });
+        });
+
+      } catch (err) {
+        console.error("Error fetching suggestions:", err);
+      }
+    });
+
+    // Hide suggestions when clicking outside
+    document.addEventListener("click", (e) => {
+      if (!document.getElementById("hero").contains(e.target)) {
+        suggestionsBox.innerHTML = "";
+      }
+    });
+
+    // Initial data load
     fetchData();
   </script>
 </body>
