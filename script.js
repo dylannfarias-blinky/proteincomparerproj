@@ -20,6 +20,45 @@ async function fetchData() {
     console.error("Error fetching sheet:", err);
     alert("Could not load product data. Check SheetDB URL and CORS settings.");
   }
+// ---------- LIVE SEARCH FEATURE ----------
+  const searchInput = document.getElementById("searchInput");
+const liveResults = document.getElementById("liveResults");
+const SHEET_URL = "https://sheetdb.io/api/v1/9aa5ss3hdm7su";
+
+searchInput.addEventListener("input", async () => {
+  const query = searchInput.value.toLowerCase().trim();
+  if (!query) {
+    liveResults.innerHTML = "";
+    return;
+  }
+
+  try {
+    const res = await fetch(SHEET_URL);
+    const data = await res.json();
+
+    const matches = data.filter(p =>
+      p.flavor?.toLowerCase().includes(query) ||
+      p.name?.toLowerCase().includes(query)
+    );
+
+    liveResults.innerHTML = matches.length
+      ? matches
+          .slice(0, 6) // show top 6
+          .map(
+            (p) => `
+              <div onclick="location.href='search.html?query=${encodeURIComponent(p.flavor || p.name)}'">
+                <strong>${p.name || "Unnamed"}</strong> — ${p.flavor || ""}
+              </div>
+            `
+          )
+          .join("")
+      : `<div class="no-results">No matches found</div>`;
+  } catch (err) {
+    console.error(err);
+    liveResults.innerHTML = `<div class="no-results">Error loading results</div>`;
+  }
+});
+
 }
 
 function renderLists() {
