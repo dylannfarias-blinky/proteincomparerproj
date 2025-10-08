@@ -5,57 +5,23 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Search Results</title>
   <link rel="stylesheet" href="styles.css">
+  <link rel="icon" type="image/x-icon" href="images/favicon_io/favicon-32x32.png">
 </head>
 <body>
   <header>
     <h1>Search Results</h1>
+    <button id="homeBtn" class="back-btn">← Back to Home</button>
   </header>
+
   <main>
     <h2 id="searchTitle"></h2>
     <div id="resultsList" class="product-list"></div>
   </main>
+
   <footer>
     <p>&copy; <span id="year"></span> Dylan Farias</p>
   </footer>
 
-  <script>
-    document.getElementById("year").textContent = new Date().getFullYear();
-
-    const SHEET_URL = "https://sheetdb.io/api/v1/9aa5ss3hdm7su";
-
-    async function fetchResults() {
-      const params = new URLSearchParams(window.location.search);
-      const query = params.get("query")?.toLowerCase() || "";
-      document.getElementById("searchTitle").textContent = `Results for "${query}"`;
-
-      try {
-        const res = await fetch(SHEET_URL);
-        const data = await res.json();
-
-        // filter bars + smoothies together
-        const matches = data.filter(p => 
-          (p.flavor && p.flavor.toLowerCase().includes(query)) ||
-          (p.name && p.name.toLowerCase().includes(query))
-        );
-
-        const resultsList = document.getElementById("resultsList");
-        resultsList.innerHTML = matches.length
-          ? matches.map(p => `
-              <div class="product-card">
-                <strong>${p.name || "Unnamed"}</strong><br>
-                ${p.brand || ""} - ${p.protein || 0}g protein<br>
-                Flavor: ${p.flavor || "Unknown"}
-              </div>
-            `).join("")
-          : "<p>No results found.</p>";
-
-      } catch (err) {
-        console.error(err);
-        document.getElementById("resultsList").innerHTML = "<p>Error loading results.</p>";
-      }
-    }
-
-    fetchResults();
-  </script>
+  <script src="search.js"></script>
 </body>
 </html>
