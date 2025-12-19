@@ -1,52 +1,41 @@
-/* styles.css */
+/* ============================
+   GLOSSY BUBBLE UI (STYLE 3)
+   ============================ */
 
-/* Import Pirata One font for titles */
+
 @import url('https://fonts.googleapis.com/css2?family=Pirata+One&display=swap');
 
+
 body {
-  font-family: Arial, sans-serif;
   margin: 0;
   padding: 0;
-  background: #121212;
-  color: #e0e0e0;
+  font-family: Arial, sans-serif;
+  background: radial-gradient(circle at top, #1a1a1a, #0e0e0e);
+  color: #f0f0f0;
 }
 
+
+/* ============================
+   HEADER
+   ============================ */
+
+
 header {
-  background: #1f1f1f;
-  color: #fff;
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(12px);
   padding: 1rem;
   text-align: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.4);
 }
+
 
 header h1 {
   margin: 0;
   font-family: 'Pirata One', cursive;
-  font-size: 2.5rem;
-}
-.back-btn {
-  background: #1a1a1a;
-  color: #fff;
-  border: none;
-  padding: 8px 14px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-family: Arial, sans-serif;
-  margin-top: 10px;
-  transition: background 0.3s;
-}
-
-.back-btn:hover {
-  background: #333;
-}
-
-.product-card {
-  background: #222;
-  color: #f9f9f9;
-  border-radius: 10px;
-  padding: 15px;
-  margin: 10px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-  font-family: Arial, sans-serif;
+  font-size: 2.8rem;
+  color: #ffd45c;
+  text-shadow: 0 0 10px #ffdd70;
 }
 
 
@@ -56,190 +45,448 @@ nav ul {
   justify-content: center;
   gap: 1.5rem;
   padding: 0;
-  margin: 0.5rem 0 0 0;
+  margin: 1rem 0 0;
 }
+
 
 nav a {
-  color: #f0c000;
-  text-decoration: none;
+  background: rgba(255,255,255,0.07);
+  padding: 8px 18px;
+  border-radius: 20px;
+  color: #ffdd70;
   font-weight: bold;
-  transition: color 0.3s;
+  text-decoration: none;
+  transition: all 0.25s ease;
+  border: 1px solid rgba(255, 255, 255, 0.09);
 }
+
 
 nav a:hover {
-  color: #ffde59;
+  background: rgba(255,255,255,0.15);
+  box-shadow: 0 0 10px #ffdd70a1;
 }
 
+
+/* ============================
+   HERO SECTION
+   ============================ */
+
+
 #hero {
-  background: #1a1a1a;
-  text-align: center;
   padding: 3rem 1rem;
-  border-bottom: 2px solid #333;
+  text-align: center;
+  background: transparent;
+  position: relative;
 }
+
 
 #hero h2 {
   font-family: 'Pirata One', cursive;
-  font-size: 2rem;
-  margin-bottom: 1rem;
-  color: #f0c000;
+  font-size: 2.3rem;
+  color: #ffdd70;
+  margin-bottom: 1.5rem;
+  text-shadow: 0 0 10px #ffdd70a8;
 }
+
 
 #hero input {
-  padding: 0.6rem;
   width: 50%;
-  max-width: 300px;
-  margin-top: 1rem;
-  border-radius: 8px;
-  border: 1px solid #444;
-  background: #1f1f1f;
+  max-width: 340px;
+  padding: 0.7rem;
+  border-radius: 16px;
+  border: 1px solid rgba(255,255,255,0.2);
+  background: rgba(255,255,255,0.08);
   color: #fff;
+  text-align: center;
+  backdrop-filter: blur(6px);
+  transition: box-shadow 0.25s;
 }
 
-section {
-  padding: 2rem 1rem;
+
+#hero input:focus {
+  outline: none;
+  box-shadow: 0 0 12px #ffdd70b0;
 }
+
+
+#hero button {
+  margin-left: 10px;
+  padding: 0.7rem 1.3rem;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #ffdd70, #ffbd2e);
+  border: none;
+  font-weight: bold;
+  color: #4b3d00;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+}
+
+
+#hero button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.6);
+}
+
+
+/* Live Search Results */
+.live-results {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-top: 10px;
+  width: 100%;
+  max-width: 360px;
+  background: rgba(255,255,255,0.07);
+  border-radius: 16px;
+  overflow: hidden;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.5);
+}
+
+
+.live-results div {
+  padding: 12px;
+  cursor: pointer;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  transition: background 0.2s;
+}
+
+
+.live-results div:hover {
+  background: rgba(255,255,255,0.15);
+}
+
+
+/* ============================
+   SECTION TITLES
+   ============================ */
+
 
 h2, h3 {
   font-family: 'Pirata One', cursive;
-  color: #f0c000;
-  margin-bottom: 1rem;
+  color: #ffdd70;
+  text-shadow: 0 0 8px #ffdd70a1;
 }
 
-.product-list {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 1rem;
-}
+
+/* ============================
+   PRODUCT CARD
+   ============================ */
+
 
 .product-card {
-  background: #1f1f1f;
-  padding: 1rem;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+  background: rgba(255,255,255,0.07);
+  border-radius: 20px;
+  padding: 1.2rem;
   text-align: center;
-  transition: transform 0.2s, box-shadow 0.2s;
+  backdrop-filter: blur(12px);
+  box-shadow: 0 4px 14px rgba(0,0,0,0.4);
+  transition: transform 0.25s, box-shadow 0.25s;
 }
+/* ============================
+   HORIZONTAL CAROUSEL SYSTEM
+   ============================ */
+
+
+.carousel-container {
+  overflow-x: auto;
+  white-space: nowrap;
+  padding: 1rem 0;
+  scrollbar-width: none; /* Firefox */
+}
+
+
+.carousel-container::-webkit-scrollbar {
+  display: none; /* Chrome/Safari */
+}
+
+
+.carousel-card {
+  display: inline-block;
+  width: 230px;
+  margin-right: 16px;
+  vertical-align: top;
+  white-space: normal;
+}
+
+
+/* space after last card */
+.carousel-container::after {
+  content: "";
+  display: inline-block;
+  width: 10px;
+}
+
+
+
 
 .product-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 6px 18px rgba(0,0,0,0.7);
+  transform: translateY(-6px);
+  box-shadow: 0 8px 22px rgba(0,0,0,0.6);
 }
+
+
+/* Grid */
+.product-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+  gap: 1.2rem;
+}
+
+
+.product-img {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+  border-radius: 16px;
+  margin-bottom: 10px;
+  background: rgba(255,255,255,0.1);
+  box-shadow: 0 3px 10px rgba(0,0,0,0.4);
+}
+
+
+
+
+/* ============================
+   COMPARISON TOOL
+   ============================ */
+
 
 .comparison-tool {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  align-items: center;
-}
-
-.comparison-tool select {
-  padding: 0.5rem;
-  border-radius: 6px;
-  border: 1px solid #444;
-  background: #1f1f1f;
-  color: #fff;
-}
-
-.comparison-tool table {
-  border-collapse: collapse;
-  margin-top: 1rem;
-  width: 90%;
-  max-width: 600px;
-}
-
-.comparison-tool th,
-.comparison-tool td {
-  border: 1px solid #333;
-  padding: 0.7rem 1rem;
-  text-align: left;
-}
-
-.comparison-tool th {
-  background: #2a2a2a;
-}
-
-form {
-  display: flex;
-  flex-direction: column;
-  gap: 0.7rem;
-  max-width: 400px;
+  background: rgba(255,255,255,0.05);
+  border-radius: 20px;
+  padding: 2rem;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 14px rgba(0,0,0,0.4);
+  max-width: 700px;
   margin: auto;
 }
 
+
+.comparison-tool select {
+  padding: 0.6rem;
+  border-radius: 16px;
+  background: rgba(255,255,255,0.08);
+  color: white;
+  border: 1px solid rgba(255,255,255,0.1);
+}
+
+
+.comparison-tool table {
+  width: 100%;
+  margin-top: 1.5rem;
+  border-collapse: collapse;
+  background: rgba(255,255,255,0.08);
+  border-radius: 16px;
+  overflow: hidden;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 3px 12px rgba(0,0,0,0.4);
+}
+
+
+.comparison-tool th,
+.comparison-tool td {
+  padding: 0.8rem;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+
+.comparison-tool th {
+  background: rgba(255,255,255,0.15);
+}
+
+
+/* ============================
+   FORMS
+   ============================ */
+
+
 form input,
 form textarea {
-  padding: 0.6rem;
-  border: 1px solid #444;
-  border-radius: 6px;
-  background: #1f1f1f;
-  color: #fff;
+  padding: 0.7rem;
+  border-radius: 16px;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.1);
+  color: white;
+  backdrop-filter: blur(6px);
 }
+
 
 form button {
-  background: #f0c000;
-  color: #121212;
   padding: 0.8rem;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #ffdd70, #ffbd2e);
   border: none;
-  border-radius: 6px;
-  cursor: pointer;
   font-weight: bold;
-  transition: background 0.3s;
+  cursor: pointer;
+  color: #4b3d00;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+  transition: transform 0.25s;
 }
+
 
 form button:hover {
-  background: #ffde59;
+  transform: translateY(-3px);
 }
+
+
+/* ============================
+   FOOTER
+   ============================ */
+
 
 footer {
+  background: rgba(255,255,255,0.06);
   text-align: center;
+  padding: 1.2rem;
+  margin-top: 3rem;
+  backdrop-filter: blur(10px);
+  border-top: 1px solid rgba(255,255,255,0.1);
+  box-shadow: 0 -4px 14px rgba(0,0,0,0.4);
+}
+
+
+footer p {
+  color: #ffdd70;
+}
+/* ============================
+   RESULTS PAGE PRODUCT GRID
+   ============================ */
+
+
+.results-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 1.2rem;
   padding: 1rem;
-  background: #1f1f1f;
-  color: #f0c000;
-  margin-top: 2rem;
-  font-family: Arial, sans-serif;
 }
 
-/* Dark mode tables */
-table {
-  background: #1f1f1f;
-  color: #e0e0e0;
-}
 
-th, td {
-  border-color: #333;
-}
-
-/* --- Live Search Dropdown --- */
-.live-results {
-  position: absolute;
-  background-color: #1c1c1c;
-  border: 1px solid #333;
-  border-radius: 8px;
-  width: 100%;
-  max-width: 400px;
-  margin-top: 8px;
-  z-index: 999;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
-  color: #f0f0f0;
-  overflow: hidden;
-  font-family: Arial, sans-serif;
-}
-
-/* Each result item */
-.live-results div {
-  padding: 10px 14px;
+.result-card {
+  background: rgba(255,255,255,0.07);
+  border-radius: 20px;
+  padding: 1rem;
+  backdrop-filter: blur(12px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+  transition: transform 0.25s, box-shadow 0.25s;
   cursor: pointer;
-  transition: background-color 0.2s ease;
 }
 
-/* Hover and focus states */
-.live-results div:hover {
-  background-color: #2a2a2a;
+
+.result-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 8px 18px rgba(0,0,0,0.6);
 }
 
-/* If no results are found */
-.live-results .no-results {
-  color: #888;
+
+.result-img {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+  border-radius: 16px;
+  margin-bottom: 10px;
+  background: rgba(255,255,255,0.1);
+  box-shadow: 0 3px 10px rgba(0,0,0,0.4);
+}
+
+
+.result-name {
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #ffdd70;
+  margin-bottom: 4px;
+}
+
+
+.result-brand {
+  font-size: 0.9rem;
+  color: #ddd;
+  margin-bottom: 8px;
+}
+
+
+.badge-row {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+
+.badge {
+  padding: 4px 8px;
+  background: rgba(255,255,255,0.15);
+  border-radius: 10px;
+  font-size: 0.75rem;
+  color: #fff;
+  backdrop-filter: blur(6px);
+  border: 1px solid rgba(255,255,255,0.12);
+}
+
+
+.type-badge {
+  background: #ffdd70;
+  color: #222;
+  font-weight: bold;
+}
+/* ============================
+   CONTACT FORM IMPROVEMENTS
+   ============================ */
+
+
+.spinner {
+  margin: 10px auto;
+  border: 4px solid rgba(255,255,255,0.2);
+  border-top: 4px solid #ffdd70;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  animation: spin 0.8s linear infinite;
+}
+
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+
+.popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  backdrop-filter: blur(10px);
+  background: rgba(0,0,0,0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+
+.popup-content {
+  background: rgba(255,255,255,0.1);
+  border-radius: 20px;
+  padding: 2rem;
   text-align: center;
-  padding: 10px;
+  backdrop-filter: blur(15px);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+  color: #ffdd70;
 }
+
+
+.popup-content button {
+  margin-top: 1rem;
+  padding: 0.6rem 1.2rem;
+  border-radius: 12px;
+  border: none;
+  background: linear-gradient(135deg,#ffdd70,#ffbd2e);
+  color: #222;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+
+

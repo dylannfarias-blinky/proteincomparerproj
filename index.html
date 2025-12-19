@@ -1,130 +1,183 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Protein Bars & Smoothies Comparison</title>
-  <link rel="stylesheet" href="styles.css">
-  <link rel="icon" type="image/x-icon" href="images/favicon_io/favicon-32x32.png">
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>Protein Bars & Smoothies Comparison</title>
+ <link rel="stylesheet" href="styles.css">
+ <link rel="icon" type="image/x-icon" href="images/favicon_io/favicon-32x32.png">
 
-  <style>
-    /* Quick inline styles for suggestions dropdown */
-    .suggestions-box {
-      position: absolute;
-      top: 100%;
-      left: 0;
-      background: white;
-      border: 0px solid #ddd;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-      max-height: 200px;
-      overflow-y: auto;
-      width: 100%;
-      z-index: 1000;
-    }
-    .suggestion-item {
-      padding: 8px;
-      cursor: pointer;
-    }
-    .suggestion-item:hover {
-      background-color: #f0f0f0;
-    }
-  </style>
+
+ <style>
+   .suggestions-box {
+     position: absolute;
+     top: 100%;
+     left: 0;
+     background: white;
+     border: 0px solid #ddd;
+     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+     max-height: 200px;
+     overflow-y: auto;
+     width: 100%;
+     z-index: 1000;
+   }
+   .suggestion-item {
+     padding: 8px;
+     cursor: pointer;
+   }
+   .suggestion-item:hover {
+     background-color: #f0f0f0;
+   }
+ </style>
 </head>
 
+
 <body>
-  <header>
-    <h1>Protein Bars & Smoothies</h1>
-    <nav>
-      <ul>
-        <li><a href="#compare">Compare</a></li>
-        <li><a href="#bars">Bars</a></li>
-        <li><a href="#smoothies">Smoothies</a></li>
-        <li><a href="#guides">Guides</a></li>
-        <li><a href="#about">About</a></li>
-        <li><a href="#contact">Contact</a></li>
-      </ul>
-    </nav>
-  </header>
+ <header>
+   <h1>Protein Bars & Smoothies</h1>
+   <nav>
+     <ul>
+       <li><a href="#compare">Compare</a></li>
+       <li><a href="#bars">Bars</a></li>
+       <li><a href="#smoothies">Smoothies</a></li>
+       <li><a href="#guides">Guides</a></li>
+       <li><a href="#about">About</a></li>
+       <li><a href="#contact">Contact</a></li>
+     </ul>
+   </nav>
+ </header>
 
-  <main>
-    <section id="hero" style="position: relative;">
-      <h2>Find the best protein bar or smoothie for your lifestyle</h2>
-      <input type="text" id="searchInput" placeholder="Search products...">
-      <button id="searchBtn">Search</button>
-      <div id="suggestions" class="suggestions-box"></div>
-    </section>
 
-    <section id="compare">
-      <h2>Comparison Tool</h2>
-      <div class="comparison-tool">
-        <label for="typeSelect">Compare:</label>
-        <select id="typeSelect">
-          <option value="bar-sm">Bar vs Smoothie</option>
-          <option value="bar-bar">Bar vs Bar</option>
-          <option value="sm-sm">Smoothie vs Smoothie</option>
-        </select>
+ <main>
+   <section id="hero" style="position: relative;">
+     <h2>Find the best protein bar or smoothie for your lifestyle</h2>
 
-        <select id="firstSelect">
-          <option value="">Select first product</option>
-        </select>
-        <select id="secondSelect">
-          <option value="">Select second product</option>
-        </select>
 
-        <table>
-          <tr><th>Nutrition</th><th>First</th><th>Second</th></tr>
-          <tr><td>Calories</td><td id="firstCalories">–</td><td id="secondCalories">–</td></tr>
-          <tr><td>Protein</td><td id="firstProtein">–</td><td id="secondProtein">–</td></tr>
-          <tr><td>Sugar</td><td id="firstSugar">–</td><td id="secondSugar">–</td></tr>
-          <tr><td>Fat</td><td id="firstFat">–</td><td id="secondFat">–</td></tr>
-          <tr><td>Price</td><td id="firstPrice">–</td><td id="secondPrice">–</td></tr>
-        </table>
-      </div>
-    </section>
+     <input type="text" id="searchInput" placeholder="Search products...">
+     <button id="searchBtn">Search</button>
 
-    <section id="bars">
-      <h2>Bars</h2>
-      <div id="barsList" class="product-list">
-        <div class="product-card">Sample Bar</div>
-      </div>
-    </section>
 
-    <section id="smoothies">
-      <h2>Smoothies</h2>
-      <div id="smoothiesList" class="product-list">
-        <div class="product-card">Sample Smoothie</div>
-      </div>
-    </section>
+     <!-- FIXED: liveResults container added -->
+     <div id="liveResults" class="live-results"></div>
 
-    <section id="guides">
-      <h2>Guides</h2>
-      <article>
-        <h3>How to Choose a Protein Snack</h3>
-        <p>Tips and nutrition breakdowns…</p>
-      </article>
-    </section>
 
-    <section id="about">
-      <h2>About</h2>
-      <p>This site helps you compare protein bars and smoothies quickly and easily.</p>
-    </section>
+     <div id="suggestions" class="suggestions-box"></div>
+   </section>
 
-    <section id="contact">
-      <h2>Contact</h2>
-      <form>
-        <input type="text" placeholder="Your Name">
-        <input type="email" placeholder="Your Email">
-        <textarea placeholder="Message"></textarea>
-        <button type="submit">Send</button>
-      </form>
-    </section>
-  </main>
 
-  <footer>
-    <p>&copy; <span id="year"></span> Dylan Farias</p>
-  </footer>
+   <section id="compare">
+     <h2>Comparison Tool</h2>
+     <div class="comparison-tool">
+       <label for="typeSelect">Compare:</label>
+       <select id="typeSelect">
+         <option value="bar-sm">Bar vs Smoothie</option>
+         <option value="bar-bar">Bar vs Bar</option>
+         <option value="sm-sm">Smoothie vs Smoothie</option>
+       </select>
 
-  <!-- Your JavaScript file -->
-  <script src="script.js"></script>
+
+       <select id="firstSelect">
+         <option value="">Select first product</option>
+       </select>
+       <select id="secondSelect">
+         <option value="">Select second product</option>
+       </select>
+
+
+       <table>
+         <tr><th>Nutrition</th><th>First</th><th>Second</th></tr>
+         <tr><td>Calories</td><td id="firstCalories">–</td><td id="secondCalories">–</td></tr>
+         <tr><td>Protein</td><td id="firstProtein">–</td><td id="secondProtein">–</td></tr>
+         <tr><td>Sugar</td><td id="firstSugar">–</td><td id="secondSugar">–</td></tr>
+         <tr><td>Fat</td><td id="firstFat">–</td><td id="secondFat">–</td></tr>
+         <tr><td>Price</td><td id="firstPrice">–</td><td id="secondPrice">–</td></tr>
+       </table>
+     </div>
+   </section>
+
+
+   <section id="bars">
+  <h2>Bars</h2>
+  <div id="barsList" class="carousel-container"></div>
+</section>
+
+
+<section id="smoothies">
+  <h2>Smoothies</h2>
+  <div id="smoothiesList" class="carousel-container"></div>
+</section>
+
+
+
+
+   <section id="guides">
+     <h2>Guides</h2>
+     <article>
+       <h3>How to Choose a Protein Snack</h3>
+       <p>Tips and nutrition breakdowns…</p>
+     </article>
+   </section>
+
+
+   <section id="about">
+     <h2>About</h2>
+     <p>This site helps you compare protein bars and smoothies quickly and easily.</p>
+   </section>
+
+
+   <section id="contact">
+     <h2>Contact</h2>
+     <form id="contactForm" action="https://formsubmit.co/djsquishysmurf2@gmail.com" method="POST" class="contact-form">
+
+
+  <!-- FormSubmit hidden settings -->
+  <input type="hidden" name="_captcha" value="false">
+  <input type="hidden" name="_template" value="box">
+  <input type="hidden" name="_subject" value="New Contact Form Message">
+
+
+  <!-- Temporary redirect (works locally too) -->
+  <input type="hidden" name="_next" value="./index.html?success=true">
+
+
+  <!-- User Inputs -->
+  <input type="text" name="name" placeholder="Your Name" required>
+  <input type="email" name="email" placeholder="Your Email" required>
+  <textarea name="message" placeholder="Message" required></textarea>
+
+
+  <button type="submit" id="submitBtn">Send</button>
+
+
+  <!-- Loading Spinner -->
+  <div id="loadingSpinner" class="spinner" style="display:none;"></div>
+
+
+</form>
+
+
+<!-- Success Popup -->
+<div id="successPopup" class="popup" style="display:none;">
+  <div class="popup-content">
+    <h3>Message Sent!</h3>
+    <p>Thank you for reaching out — we’ll get back to you soon.</p>
+    <button id="closePopup">Close</button>
+  </div>
+</div>
+
+
+
+
+
+
+ <footer>
+   <p>&copy; <span id="year"></span> Dylan Farias</p>
+ </footer>
+
+
+ <script src="script.js"></script>
 </body>
 </html>
+
+
+
